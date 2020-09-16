@@ -823,7 +823,7 @@ export const makeStore = (context) => {
     const store = createStore(reducer, applyMiddleware(sagaMiddleware));
 
     // 3: Run your sagas on server
-    (store as SagaStore).sagaTask = sagaMiddleware.run(rootSaga);
+    store.sagaTask = sagaMiddleware.run(rootSaga);
 
     // 4: now return the store:
     return store;
@@ -890,7 +890,7 @@ class WrappedApp extends App {
         // 2. Stop the saga if on server
         if (ctx.req) {
             ctx.store.dispatch(END);
-            await (ctx.store as SagaStore).sagaTask.toPromise();
+            await ctx.store.sagaTask.toPromise();
         }
 
         // 3. Return props
